@@ -4,11 +4,10 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.ahmadarif.simpledaggerjava.BuildConfig;
+import com.ahmadarif.simpledaggerjava.dagger.qualifier.Authorized;
+import com.ahmadarif.simpledaggerjava.dagger.scope.AppScope;
 
 import java.io.IOException;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -36,14 +35,14 @@ public class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @AppScope
     Cache cache(Application app) {
         int cacheSize = 10 * 1024 * 1024; // 10 MB
         return new Cache(app.getCacheDir(), cacheSize);
     }
 
     @Provides
-    @Singleton
+    @AppScope
     HttpLoggingInterceptor loggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         if (BuildConfig.DEBUG) {
@@ -55,7 +54,7 @@ public class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @AppScope
     OkHttpClient httpClient(HttpLoggingInterceptor logger, Cache cache) {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.addInterceptor(logger);
@@ -64,7 +63,7 @@ public class NetworkModule {
     }
 
     @Provides
-    @Singleton
+    @AppScope
     Retrofit retrofit(OkHttpClient client) {
         return new Retrofit.Builder()
                 .client(client)
@@ -75,8 +74,8 @@ public class NetworkModule {
     }
 
     @Provides
-    @Singleton
-    @Named("Authorized")
+    @AppScope
+    @Authorized
     OkHttpClient httpClientAuth(HttpLoggingInterceptor logger, Cache cache) {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.addInterceptor(new Interceptor() {
@@ -97,9 +96,9 @@ public class NetworkModule {
     }
 
     @Provides
-    @Singleton
-    @Named("Authorized")
-    Retrofit retrofitAuth(@Named("Authorized") OkHttpClient client) {
+    @AppScope
+    @Authorized
+    Retrofit retrofitAuth(@Authorized OkHttpClient client) {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl(baseUrl)

@@ -1,9 +1,8 @@
 package com.ahmadarif.simpledaggerjava.dagger.module;
 
+import com.ahmadarif.simpledaggerjava.dagger.qualifier.Authorized;
+import com.ahmadarif.simpledaggerjava.dagger.scope.AppScope;
 import com.ahmadarif.simpledaggerjava.service.ApiService;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -16,15 +15,15 @@ import retrofit2.Retrofit;
 public class ApiModule {
 
     @Provides
-    @Singleton
+    @AppScope
     ApiService apiService(Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
 
     @Provides
-    @Singleton
-    @Named("Authorized")
-    ApiService apiServiceAuth(@Named("Authorized") Retrofit retrofit) {
+    @AppScope
+    @Authorized
+    ApiService apiServiceAuth(@Authorized Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
 

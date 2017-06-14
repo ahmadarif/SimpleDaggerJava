@@ -10,14 +10,13 @@ import android.content.SharedPreferences;
 import com.ahmadarif.simpledaggerjava.dagger.module.ApiModule;
 import com.ahmadarif.simpledaggerjava.dagger.module.AppModule;
 import com.ahmadarif.simpledaggerjava.dagger.module.NetworkModule;
+import com.ahmadarif.simpledaggerjava.dagger.qualifier.Authorized;
+import com.ahmadarif.simpledaggerjava.dagger.scope.AppScope;
 import com.ahmadarif.simpledaggerjava.service.ApiService;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 import dagger.Component;
 
-@Singleton
+@AppScope
 @Component(modules = {
         AppModule.class,
         NetworkModule.class,
@@ -27,5 +26,7 @@ public interface AppComponent {
     Application application();
     SharedPreferences sharedPreferences();
     ApiService apiServive();
-    @Named("Authorized") ApiService apiServiveAuth();
+
+    @Authorized
+    ApiService apiServiveAuth();
 }

@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.ahmadarif.simpledaggerjava.App;
-
-import javax.inject.Singleton;
+import com.ahmadarif.simpledaggerjava.dagger.scope.AppScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,19 +24,19 @@ public class AppModule {
     }
 
     @Provides
-    @Singleton
+    @AppScope
     Application application() {
         return app;
     }
 
     @Provides
-    @Singleton
+    @AppScope
     Context context() {
         return app.getApplicationContext();
     }
 
     @Provides
-    @Singleton
+    @AppScope
     SharedPreferences sharedPreferences(Application app) {
         return PreferenceManager.getDefaultSharedPreferences(app);
     }

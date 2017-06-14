@@ -3,12 +3,12 @@ package com.ahmadarif.simpledaggerjava.activity.main;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.ahmadarif.simpledaggerjava.dagger.qualifier.Authorized;
 import com.ahmadarif.simpledaggerjava.model.Response;
 import com.ahmadarif.simpledaggerjava.mvp.Presenter;
 import com.ahmadarif.simpledaggerjava.service.ApiService;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,7 +29,7 @@ public class MainActivityPresenter implements Presenter<MainActivityView> {
     private final SharedPreferences pref;
 
     @Inject
-    public MainActivityPresenter(Application app, @Named("Authorized") ApiService api, SharedPreferences pref) {
+    public MainActivityPresenter(Application app, @Authorized ApiService api, SharedPreferences pref) {
         this.app = app;
         this.api = api;
         this.pref = pref;
