@@ -42,6 +42,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         onAttach();
     }
 
+    @OnClick(R.id.btnLogin)
+    public void btnLoginClick() {
+        presenter.login();
+    }
+
+    @OnClick(R.id.btnLogout)
+    public void btnLogoutClick() {
+        presenter.logout();
+    }
+
     @OnClick(R.id.btnHello)
     public void btnHelloClick() {
         progress.show();

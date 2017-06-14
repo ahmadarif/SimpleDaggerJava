@@ -7,6 +7,8 @@ import com.ahmadarif.simpledaggerjava.model.Response;
 import com.ahmadarif.simpledaggerjava.mvp.Presenter;
 import com.ahmadarif.simpledaggerjava.service.ApiService;
 
+import java.util.logging.Logger;
+
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
@@ -40,6 +42,14 @@ public class MainActivityPresenter implements Presenter<MainActivityView> {
     @Override
     public void onDetach() {
         view = null;
+    }
+
+    public void login() {
+        pref.edit().putString("token", "tokeninirahasia").apply();
+    }
+
+    public void logout() {
+        pref.edit().clear().apply();
     }
 
     public void loadHello() {
