@@ -23,7 +23,6 @@ import dagger.Component;
         ApiModule.class
 })
 public interface AppComponent {
-    Application application();
     SharedPreferences sharedPreferences();
     ApiService apiServive();
 

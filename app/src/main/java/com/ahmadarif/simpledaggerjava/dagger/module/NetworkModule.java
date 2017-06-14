@@ -1,13 +1,16 @@
 package com.ahmadarif.simpledaggerjava.dagger.module;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.ahmadarif.simpledaggerjava.BuildConfig;
 import com.ahmadarif.simpledaggerjava.dagger.qualifier.Authorized;
 import com.ahmadarif.simpledaggerjava.dagger.scope.AppScope;
+import com.ahmadarif.simpledaggerjava.service.interceptor.AuthInterceptor;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
 import dagger.Provides;
@@ -59,6 +62,9 @@ public class NetworkModule {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         builder.addInterceptor(logger);
         builder.cache(cache);
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
         return builder.build();
     }
 
@@ -76,22 +82,14 @@ public class NetworkModule {
     @Provides
     @AppScope
     @Authorized
-    OkHttpClient httpClientAuth(HttpLoggingInterceptor logger, Cache cache) {
+    OkHttpClient httpClientAuth(HttpLoggingInterceptor logger, Cache cache, SharedPreferences pref) {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(@NonNull Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-
-                Request.Builder requestBuilder = original.newBuilder()
-                        .header("Authorization", "Bearer tokeninirahasia");
-
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
-        });
+        builder.addInterceptor(new AuthInterceptor(pref));
         builder.addInterceptor(logger);
         builder.cache(cache);
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.writeTimeout(10, TimeUnit.SECONDS);
+        builder.readTimeout(30, TimeUnit.SECONDS);
         return builder.build();
     }
 

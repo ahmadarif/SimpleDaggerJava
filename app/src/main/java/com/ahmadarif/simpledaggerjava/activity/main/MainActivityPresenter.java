@@ -1,6 +1,5 @@
 package com.ahmadarif.simpledaggerjava.activity.main;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.ahmadarif.simpledaggerjava.dagger.qualifier.Authorized;
@@ -24,13 +23,11 @@ public class MainActivityPresenter implements Presenter<MainActivityView> {
 
     private MainActivityView view = null;
 
-    private final Application app;
     private final ApiService api;
     private final SharedPreferences pref;
 
     @Inject
-    public MainActivityPresenter(Application app, @Authorized ApiService api, SharedPreferences pref) {
-        this.app = app;
+    public MainActivityPresenter(@Authorized ApiService api, SharedPreferences pref) {
         this.api = api;
         this.pref = pref;
     }
